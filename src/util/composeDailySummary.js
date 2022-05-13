@@ -11,15 +11,15 @@ const composeDailySummary = async () => {
     const inflationResults = await queryAll(inflation_table);
     const burnResults = await queryAll(burn_table);
 
-    indexInflationEvents(summary, inflationResults);
-    indexBurnEvents(summary, burnResults)
+    groupInflationEvents(summary, inflationResults);
+    groupBurnEvents(summary, burnResults)
 
     for (const [key, value] of Object.entries(summary)) {
         console.log(`Date: ${key}: Mint: ${value.mint} | Burn: ${value.burn} | Net: ${value.net}`);
     }
 }
 
-const indexInflationEvents = async (summary, inflationEvents) => {
+const groupInflationEvents = async (summary, inflationEvents) => {
     for (let idx = 0; idx < inflationEvents.length; idx++) {
         const inflationEvent = inflationEvents[idx];
         const { block_timestamp, value } = inflationEvent.attributes;
@@ -44,7 +44,7 @@ const indexInflationEvents = async (summary, inflationEvents) => {
     }
 }
 
-const indexBurnEvents = async (summary, burnEvents) => {
+const groupBurnEvents = async (summary, burnEvents) => {
     for (let idx = 0; idx < burnEvents.length; idx++) {
         const burnEvent = burnEvents[idx];
         const { block_timestamp, value, to, from } = burnEvent.attributes;
